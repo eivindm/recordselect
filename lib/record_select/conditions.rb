@@ -77,10 +77,10 @@ module RecordSelect
       column_name = model.quoted_table_name + '.' + model.connection.quote_column_name(column.name)
       if value.blank? and column.null
         "#{column_name} IS NULL"
-      elsif column.text?
+      elsif column.type == :varchar || column.type == :text || column.type == :char
         ["LOWER(#{column_name}) LIKE ?", value]
       else
-        ["#{column_name} = ?", column.send(@@type_cast_method, value)]
+        ["#{column_name} = ?", value]
       end
     end
 
